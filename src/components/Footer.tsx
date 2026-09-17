@@ -1,72 +1,74 @@
 import Link from "next/link";
-import { siteInfo } from "@/lib/site";
+import { moreLinks, nav, siteInfo } from "@/lib/site";
 import { Logo } from "@/components/Logo";
+import { Icon } from "@/components/Icon";
+
+const socials = [
+  { href: siteInfo.instagram, icon: "instagram" as const, label: "اینستاگرام" },
+  { href: siteInfo.telegram, icon: "telegram" as const, label: "تلگرام" },
+  { href: siteInfo.linkedin, icon: "linkedin" as const, label: "لینکدین" },
+];
 
 export function Footer() {
   return (
-    <footer className="border-t border-line bg-surface mt-24">
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-14 grid gap-10 sm:grid-cols-2 md:grid-cols-4">
-        <div>
-          <Logo className="h-11 w-auto" />
-          <p className="text-sm text-muted mt-4 max-w-xs leading-6">
-            نیرا، جادویی از رایحه برای لحظات خاص زندگی. تولید، سفارشی‌سازی و پخش عطر و
-            ادکلن با استانداردهای بین‌المللی.
-          </p>
+    <footer className="dark-band text-white">
+      {/* Source order is reversed on purpose: in RTL it lands the icons on the
+          right, the links in the middle and the wordmark on the left, the way
+          the brand layout sets the bar. */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 flex flex-wrap items-center justify-between gap-6">
+        <div className="flex items-center gap-3 order-1">
+          {socials.map((s) => (
+            <a
+              key={s.icon}
+              href={s.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={s.label}
+              className="inline-flex items-center justify-center w-9 h-9 rounded-full text-white/80 hover:text-white hover:bg-white/15 transition-colors"
+            >
+              <Icon name={s.icon} />
+            </a>
+          ))}
         </div>
 
-        <div>
-          <h5 className="font-medium mb-3">دسترسی سریع</h5>
-          <ul className="space-y-2 text-sm text-muted">
-            <li>
-              <Link className="hover:text-accent" href="/shop">
-                فروشگاه
-              </Link>
-            </li>
-            <li>
-              <Link className="hover:text-accent" href="/catalog">
-                کاتالوگ
-              </Link>
-            </li>
-            <li>
-              <Link className="hover:text-accent" href="/gallery">
-                گالری نیرا
-              </Link>
-            </li>
-            <li>
-              <Link className="hover:text-accent" href="/archive">
-                آرشیو پروژه‌ها
-              </Link>
-            </li>
-          </ul>
-        </div>
+        <nav className="flex flex-wrap items-center gap-x-7 gap-y-3 text-sm order-2 mx-auto">
+          {nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-white/80 hover:text-white transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+          {moreLinks.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="hidden xl:inline text-white/60 hover:text-white transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
-        <div>
-          <h5 className="font-medium mb-3">خدمات</h5>
-          <ul className="space-y-2 text-sm text-muted">
-            <li>
-              <Link className="hover:text-accent" href="/custom-order">
-                عطر اختصاصی سازمانی
-              </Link>
-            </li>
-            <li>
-              <Link className="hover:text-accent" href="/contact">
-                تماس با ما
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h5 className="font-medium mb-3">ارتباط با ما</h5>
-          <ul className="space-y-2 text-sm text-muted">
-            <li>{siteInfo.address}</li>
-            <li>{siteInfo.landline}</li>
-            <li>{siteInfo.phone}</li>
-          </ul>
-        </div>
+        <Link href="/" className="flex items-center gap-4 order-3">
+          <Logo tone="cream" className="h-10 w-auto" />
+          <span className="hidden sm:inline text-white/60 text-xs tracking-[0.2em]">
+            {siteInfo.tagline}
+          </span>
+        </Link>
       </div>
-      <div className="border-t border-line py-5 text-xs text-muted text-center">
-        © ۱۴۰۴ نیرا عطر صحرا. تمامی حقوق محفوظ است — نسخه نمونه اولیه (MVP)
+
+      <div className="border-t border-white/15">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between gap-4 text-[11px] text-white/60">
+          <span className="flex items-center gap-2">
+            <span className="text-white/80">فارسی</span>
+            <span className="text-white/30">|</span>
+            <span>EN</span>
+          </span>
+          <span>© ۱۴۰۴ نیرا عطر صحرا. تمامی حقوق محفوظ است.</span>
+        </div>
       </div>
     </footer>
   );

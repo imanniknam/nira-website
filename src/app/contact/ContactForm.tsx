@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Icon } from "@/components/Icon";
+
+const inputClass =
+  "w-full rounded-xl border border-line bg-blush/60 px-5 py-3.5 text-sm outline-none placeholder:text-muted/80 focus:border-rose focus:bg-surface transition-colors";
 
 export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -13,7 +17,10 @@ export function ContactForm() {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-line bg-surface p-8 text-center"
       >
-        <p className="text-lg font-medium">پیام شما ارسال شد ✓</p>
+        <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blush text-accent">
+          <Icon name="check" className="w-6 h-6" />
+        </span>
+        <p className="text-lg font-medium text-accent mt-4">پیام شما ارسال شد</p>
         <p className="text-muted text-sm mt-2">تیم نیرا به‌زودی با شما تماس می‌گیرد.</p>
       </motion.div>
     );
@@ -25,45 +32,26 @@ export function ContactForm() {
         e.preventDefault();
         setSubmitted(true);
       }}
-      className="rounded-2xl border border-line bg-surface p-6 sm:p-8 space-y-4"
+      className="space-y-3.5"
     >
-      <div className="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm mb-1.5">نام و نام خانوادگی</label>
-          <input
-            required
-            className="w-full rounded-xl border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
-          />
-        </div>
-        <div>
-          <label className="block text-sm mb-1.5">شماره تماس</label>
-          <input
-            type="tel"
-            required
-            className="w-full rounded-xl border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
-          />
-        </div>
-      </div>
-      <div>
-        <label className="block text-sm mb-1.5">موضوع</label>
-        <input
-          placeholder="خرید، همکاری، پشتیبانی..."
-          className="w-full rounded-xl border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
-        />
-      </div>
-      <div>
-        <label className="block text-sm mb-1.5">پیام شما</label>
-        <textarea
-          required
-          rows={4}
-          className="w-full rounded-xl border border-line bg-background px-4 py-3 text-sm outline-none focus:border-accent"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full rounded-full bg-accent hover:bg-accent-dark transition-colors text-white px-6 py-3 text-sm"
-      >
+      <input required placeholder="نام و نام خانوادگی" aria-label="نام و نام خانوادگی" className={inputClass} />
+      <input
+        type="email"
+        required
+        placeholder="ایمیل"
+        aria-label="ایمیل"
+        className={inputClass}
+      />
+      <textarea
+        required
+        rows={5}
+        placeholder="پیام شما"
+        aria-label="پیام شما"
+        className={inputClass}
+      />
+      <button type="submit" className="btn btn-primary">
         ارسال پیام
+        <Icon name="arrow" className="w-4 h-4" />
       </button>
     </form>
   );

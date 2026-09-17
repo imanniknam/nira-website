@@ -8,7 +8,11 @@ export const metadata = {
 export default function CartPage() {
   return (
     <div>
-      <PageHero eyebrow="خرید شما" title="سبد خرید" />
+      <PageHero
+        eyebrow="Your Cart"
+        title="سبد خرید"
+        image="/img/brand/marble-rose.png"
+      />
       <div className="max-w-6xl mx-auto px-4 sm:px-8 py-14">
         <CartView />
       </div>

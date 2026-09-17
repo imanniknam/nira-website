@@ -1,133 +1,136 @@
-import Link from "next/link";
+import Image from "next/image";
+import { PageHero } from "@/components/PageHero";
 import { FadeUp, Stagger, StaggerItem } from "@/components/MotionSection";
+import { CtaBand, SectionHeading } from "@/components/Sections";
+import { Icon, type IconName } from "@/components/Icon";
 import { CustomOrderForm } from "./CustomOrderForm";
 
 export const metadata = {
-  title: "سفارش عطر اختصاصی سازمانی | نیرا عطر صحرا",
+  title: "همکاری با شرکت‌ها | نیرا",
+  description:
+    "طراحی و تولید عطر اختصاصی سازمانی: از فرمولاسیون و رایحه‌ی برند تا بسته‌بندی و تحویل.",
 };
 
-const steps = [
-  {
-    num: "۰۱",
-    title: "جلسه‌ی مشاوره و بریف برند",
-    desc: "شناخت هویت برند، مخاطب هدف و پیام رایحه‌ای مورد نظر شما.",
-  },
-  {
-    num: "۰۲",
-    title: "طراحی فرمول و تست رایحه",
-    desc: "ساخت چند نمونه‌ی اولیه توسط عطارهای نیرا و ارزیابی مشترک.",
-  },
-  {
-    num: "۰۳",
-    title: "طراحی بطری و بسته‌بندی",
-    desc: "طراحی اختصاصی لیبل، رنگ و جعبه با هویت بصری برند شما.",
-  },
-  {
-    num: "۰۴",
-    title: "تولید انبوه و تحویل",
-    desc: "تولید نهایی در تیراژ درخواستی و تحویل به‌موقع برای رویداد یا کمپین.",
-  },
+const why: { icon: IconName; title: string; hint: string }[] = [
+  { icon: "flask", title: "توسعه فرمولاسیون", hint: "با عطرسازان حرفه‌ای" },
+  { icon: "diamond", title: "رایحه‌های اختصاصی", hint: "مخصوص برند شما" },
+  { icon: "sparkle", title: "کیفیت بالا", hint: "مواد اولیه مرغوب" },
+  { icon: "handshake", title: "همکاری بلندمدت", hint: "و پشتیبانی کامل" },
 ];
 
-const audience = [
-  "🏢 شرکت‌ها و هلدینگ‌هایی که به‌دنبال هدیه‌ای متمایز برای مشتریان و کارکنان هستند",
-  "🎪 برندهایی که در نمایشگاه‌های تخصصی حضور دارند و به یک رایحه‌ی برند نیاز دارند",
-  "🎁 مناسبت‌های سازمانی، افتتاحیه‌ها و رویدادهای ویژه",
-  "🛍️ فروشگاه‌ها و برندهایی که می‌خواهند خط تولید عطر اختصاصی خود را راه‌اندازی کنند",
+const steps = [
+  "مشاوره و نیازسنجی",
+  "طراحی رایحه اختصاصی",
+  "تولید و تست کیفیت",
+  "بسته‌بندی و تحویل",
 ];
 
 export default function CustomOrderPage() {
   return (
     <div>
-      <section className="border-b border-line bg-surface">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-20">
-          <FadeUp className="max-w-2xl">
-            <span className="text-accent text-sm">خدمات سازمانی نیرا</span>
-            <h1 className="text-3xl sm:text-4xl font-bold mt-3">
-              عطر اختصاصی، <em className="not-italic text-accent">امضای برند شما</em>
-            </h1>
-            <p className="text-muted mt-4 leading-7">
-              از هدایای تبلیغاتی نمایشگاهی تا رایحه‌ی اختصاصی سازمانی — تیم نیرا رایحه‌ای
-              می‌سازد که فقط متعلق به برند شماست.
-            </p>
-            <div className="flex flex-wrap gap-3 mt-8">
-              <Link
-                href="#form"
-                className="rounded-full bg-accent hover:bg-accent-dark transition-colors text-white px-6 py-3 text-sm"
-              >
-                درخواست مشاوره رایگان
-              </Link>
-              <Link
-                href="/archive"
-                className="rounded-full border border-line hover:border-accent transition-colors px-6 py-3 text-sm"
-              >
-                مشاهده نمونه‌کارها
-              </Link>
-            </div>
-          </FadeUp>
+      <PageHero
+        eyebrow="Corporate Solutions"
+        title="عطرهای اختصاصی"
+        titleAccent="برای برند شما"
+        description="با ما رایحه‌ای منحصربه‌فرد برای برندتان خلق کنید. عطرهای اختصاصی، هویت و ارزش برند شما را در ذهن مشتریان ماندگار می‌کند."
+        image="/img/brand/petals-rose.png"
+        cta={{ href: "#form", label: "تماس با ما" }}
+      />
+
+      <section className="bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-20">
+          <SectionHeading
+            title="چرا نیرا؟"
+            subtitle="تجربه، خلاقیت و کیفیت، کنار شما"
+          />
+          <Stagger className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12 sm:divide-x sm:divide-x-reverse divide-line">
+            {why.map((w) => (
+              <StaggerItem key={w.title} className="text-center px-3">
+                <Icon name={w.icon} className="w-9 h-9 mx-auto text-accent" />
+                <b className="block text-accent mt-4 text-sm">{w.title}</b>
+                <span className="block text-xs text-muted mt-1.5 leading-6">{w.hint}</span>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 sm:px-8 py-20">
-        <FadeUp className="mb-8">
-          <span className="text-accent text-sm">فرآیند کار</span>
-          <h2 className="text-2xl sm:text-3xl font-bold mt-2">از ایده تا بطری نهایی</h2>
-        </FadeUp>
-        <Stagger className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {steps.map((s) => (
-            <StaggerItem key={s.num}>
-              <div className="rounded-2xl border border-line bg-surface p-6 h-full">
-                <div className="text-3xl font-bold text-accent/40">{s.num}</div>
-                <h4 className="font-medium mt-3">{s.title}</h4>
-                <p className="text-muted text-sm mt-2 leading-6">{s.desc}</p>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
-      </section>
+      <section className="bg-blush">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-20 grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <FadeUp className="relative aspect-[5/4] rounded-2xl overflow-hidden order-2 md:order-1">
+            <Image
+              src="/img/products/nira-versace-crystal-noir.jpg"
+              alt="فرآیند طراحی عطر اختصاصی"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </FadeUp>
 
-      <section className="bg-surface border-y border-line">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-20">
-          <FadeUp>
-            <span className="text-accent text-sm">چه کسانی مناسب این خدمت هستند؟</span>
-            <h2 className="text-2xl sm:text-3xl font-bold mt-2 mb-6">
-              هدایای تبلیغاتی و رایحه‌ی سازمانی
-            </h2>
-            <ul className="space-y-3 max-w-2xl">
-              {audience.map((a) => (
-                <li key={a} className="text-muted leading-7">
-                  {a}
+          <FadeUp delay={0.1} className="order-1 md:order-2">
+            <span className="eyebrow-latin block">Our Process</span>
+            <h2 className="text-2xl sm:text-4xl font-bold text-accent mt-3">فرآیند همکاری</h2>
+            <p className="text-muted mt-4 leading-8 text-sm sm:text-base max-w-lg">
+              از مشاوره‌ی اولیه تا تولید نهایی، در کنار شما هستیم. ما با درک نیازهای
+              برند شما، رایحه‌ای اختصاصی و متناسب با هویت کسب‌وکارتان طراحی می‌کنیم.
+            </p>
+
+            <ol className="mt-8 space-y-4">
+              {steps.map((s, i) => (
+                <li key={s} className="flex items-center gap-4">
+                  <span className="text-sm text-accent flex-1 border-b border-dashed border-line pb-3">
+                    {s}
+                  </span>
+                  <span className="shrink-0 w-8 h-8 rounded-full bg-accent text-white text-xs flex items-center justify-center">
+                    {(i + 1).toLocaleString("fa-IR")}
+                  </span>
                 </li>
               ))}
-            </ul>
+            </ol>
           </FadeUp>
         </div>
       </section>
 
-      <section id="form" className="max-w-6xl mx-auto px-4 sm:px-8 py-20 grid md:grid-cols-2 gap-12">
-        <FadeUp>
-          <span className="text-accent text-sm">فرم درخواست</span>
-          <h2 className="text-2xl sm:text-3xl font-bold mt-2">شروع همکاری سازمانی</h2>
-          <p className="text-muted mt-3 leading-7">
-            اطلاعات پروژه‌ی خود را ثبت کنید؛ تیم نیرا ظرف ۴۸ ساعت با شما تماس می‌گیرد.
-          </p>
-          <div className="flex flex-wrap gap-2 mt-6 text-xs text-muted">
-            <span className="rounded-full border border-line px-3 py-1.5">
-              🔒 محرمانگی کامل بریف برند
-            </span>
-            <span className="rounded-full border border-line px-3 py-1.5">
-              🧪 نمونه رایگان اولیه
-            </span>
-            <span className="rounded-full border border-line px-3 py-1.5">
-              📦 امکان تیراژ سفارشی
-            </span>
-          </div>
-        </FadeUp>
+      <section id="form" className="bg-background scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-20 grid md:grid-cols-2 gap-10 lg:gap-14">
+          <FadeUp>
+            <span className="eyebrow-latin block">Request a Quote</span>
+            <h2 className="text-2xl sm:text-4xl font-bold text-accent mt-3">
+              شروع همکاری سازمانی
+            </h2>
+            <p className="text-muted mt-4 leading-8 text-sm sm:text-base max-w-md">
+              اطلاعات پروژه‌ی خود را ثبت کنید؛ تیم نیرا ظرف ۴۸ ساعت با شما تماس می‌گیرد.
+            </p>
+            <div className="flex flex-wrap gap-2 mt-7 text-xs text-muted">
+              {[
+                { icon: "shield" as const, label: "محرمانگی کامل بریف برند" },
+                { icon: "flask" as const, label: "نمونه رایگان اولیه" },
+                { icon: "box" as const, label: "امکان تیراژ سفارشی" },
+              ].map((chip) => (
+                <span
+                  key={chip.label}
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-2"
+                >
+                  <Icon name={chip.icon} className="w-4 h-4 text-rose" />
+                  {chip.label}
+                </span>
+              ))}
+            </div>
+          </FadeUp>
 
-        <FadeUp delay={0.1}>
-          <CustomOrderForm />
-        </FadeUp>
+          <FadeUp delay={0.1}>
+            <CustomOrderForm />
+          </FadeUp>
+        </div>
       </section>
+
+      <CtaBand
+        eyebrow="برند خود را متمایز کنید"
+        title="همین حالا با ما تماس بگیرید"
+        href="/contact"
+        label="تماس با ما"
+        image="/img/products/nira-esentric-molecules-o2.jpg"
+      />
     </div>
   );
 }

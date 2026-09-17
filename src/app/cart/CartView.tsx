@@ -18,13 +18,13 @@ export function CartView() {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-line bg-surface p-10 text-center max-w-md mx-auto"
       >
-        <p className="text-lg font-medium">سفارش شما ثبت شد ✓</p>
+        <p className="text-lg font-medium text-accent">سفارش شما ثبت شد ✓</p>
         <p className="text-muted text-sm mt-2">
           همکاران ما به‌زودی برای هماهنگی ارسال با شما تماس می‌گیرند.
         </p>
         <Link
           href="/shop"
-          className="inline-block mt-6 rounded-full bg-accent hover:bg-accent-dark transition-colors text-white px-6 py-3 text-sm"
+          className="btn btn-primary mt-6"
         >
           بازگشت به فروشگاه
         </Link>
@@ -38,7 +38,7 @@ export function CartView() {
         <p className="text-muted">سبد خرید شما خالی است.</p>
         <Link
           href="/shop"
-          className="inline-block mt-6 rounded-full border border-line hover:border-accent transition-colors px-6 py-3 text-sm"
+          className="btn btn-outline mt-6"
         >
           مشاهده فروشگاه
         </Link>
@@ -56,7 +56,7 @@ export function CartView() {
           >
             <Link
               href={`/product/${item.slug}`}
-              className="relative w-20 h-20 rounded-xl bg-white border border-line overflow-hidden flex-none"
+              className="relative w-20 h-20 rounded-xl bg-blush border border-line overflow-hidden flex-none"
             >
               <Image src={item.image} alt={item.name} fill sizes="80px" className="object-contain p-1.5" />
             </Link>
@@ -103,7 +103,7 @@ export function CartView() {
       </div>
 
       <div className="rounded-2xl border border-line bg-surface p-6 h-fit space-y-4">
-        <h3 className="font-medium">خلاصه سفارش</h3>
+        <h3 className="font-medium text-accent">خلاصه سفارش</h3>
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted">جمع کل</span>
           <span>
@@ -113,7 +113,7 @@ export function CartView() {
         </div>
         <button
           onClick={() => setCheckedOut(true)}
-          className="w-full rounded-full bg-accent hover:bg-accent-dark transition-colors text-white px-6 py-3 text-sm"
+          className="btn btn-primary w-full justify-center"
         >
           ثبت سفارش
         </button>

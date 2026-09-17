@@ -46,7 +46,7 @@ export function AddToCartButton({ product }: { product: Product }) {
           setAdded(true);
           setTimeout(() => setAdded(false), 1800);
         }}
-        className="flex-1 rounded-full bg-accent hover:bg-accent-dark transition-colors text-white px-6 py-3 text-sm relative overflow-hidden"
+        className="flex-1 rounded-full bg-accent hover:bg-accent-dark transition-colors text-white px-6 py-3 text-sm relative overflow-hidden text-center"
       >
         <AnimatePresence mode="wait">
           <motion.span

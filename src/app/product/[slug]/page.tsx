@@ -7,7 +7,7 @@ import {
   getDiscountPercent,
   getProductBySlug,
   getRelatedProducts,
-  products,
+  visibleProducts,
 } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 import { FadeUp, Stagger, StaggerItem } from "@/components/MotionSection";
@@ -15,7 +15,7 @@ import { ProductTabs } from "./ProductTabs";
 import { AddToCartButton } from "./AddToCartButton";
 
 export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  return visibleProducts.map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProductPage({
@@ -39,7 +39,7 @@ export default async function ProductPage({
 
   return (
     <div>
-      <div className="border-b border-line bg-surface">
+      <div className="border-b border-line bg-blush">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-4 text-sm text-muted">
           <Link href="/" className="hover:text-accent">
             خانه
@@ -54,7 +54,7 @@ export default async function ProductPage({
 
       <section className="max-w-6xl mx-auto px-4 sm:px-8 py-14 grid md:grid-cols-2 gap-12">
         <FadeUp>
-          <div className="relative aspect-square rounded-2xl bg-white border border-line overflow-hidden">
+          <div className="relative aspect-square rounded-2xl bg-blush border border-line overflow-hidden">
             <Image
               src={product.image}
               alt={product.name}
@@ -80,7 +80,7 @@ export default async function ProductPage({
 
         <FadeUp delay={0.1}>
           <span className="text-accent text-sm">{product.brand}</span>
-          <h1 className="text-2xl sm:text-3xl font-bold mt-2">{product.name}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-accent mt-2">{product.name}</h1>
           <p className="text-muted text-sm mt-2">
             {categoryLabels[product.category]} · {product.concentration} ·{" "}
             {product.volume} · {product.origin}
@@ -88,7 +88,7 @@ export default async function ProductPage({
           <span
             className={`inline-block mt-3 text-xs rounded-full px-3 py-1 ${
               product.packaging === "اورجینال"
-                ? "bg-background text-muted border border-line"
+                ? "bg-blush text-muted border border-line"
                 : "bg-accent/10 text-accent"
             }`}
           >
@@ -98,7 +98,7 @@ export default async function ProductPage({
           </span>
 
           <div className="mt-6 flex items-center gap-3">
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-accent">
               {formatPrice(product.price)}
               <small className="text-muted text-sm mr-1 font-normal">تومان</small>
             </div>
@@ -107,7 +107,7 @@ export default async function ProductPage({
                 <span className="text-muted line-through text-sm">
                   {formatPrice(product.originalPrice)}
                 </span>
-                <span className="rounded-full bg-[#D60644] px-2.5 py-1 text-xs text-white">
+                <span className="rounded-full bg-rose px-2.5 py-1 text-xs text-white">
                   ٪{getDiscountPercent(product).toLocaleString("fa-IR")} تخفیف
                 </span>
               </>
@@ -120,13 +120,13 @@ export default async function ProductPage({
 
           <div className="flex flex-wrap gap-2 mt-6 text-xs text-muted">
             <span className="rounded-full border border-line px-3 py-1.5">
-              🚚 تحویل اکسپرس
+              تحویل اکسپرس
             </span>
             <span className="rounded-full border border-line px-3 py-1.5">
-              ☎ پشتیبانی ۲۴ ساعته
+              پشتیبانی ۲۴ ساعته
             </span>
             <span className="rounded-full border border-line px-3 py-1.5">
-              ↩ ۷ روز ضمانت بازگشت
+              ۷ روز ضمانت بازگشت
             </span>
           </div>
 
@@ -157,7 +157,7 @@ export default async function ProductPage({
         <section className="max-w-6xl mx-auto px-4 sm:px-8 pb-20">
           <FadeUp className="mb-6">
             <span className="text-accent text-sm">محصولات مرتبط</span>
-            <h2 className="text-xl sm:text-2xl font-bold mt-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-accent mt-2">
               شاید این‌ها را هم دوست داشته باشید
             </h2>
           </FadeUp>

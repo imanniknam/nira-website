@@ -1,22 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf9fc;
-  --foreground: #221c2e;
+  /* Rose / plum system taken from the brand mockups. */
+  --background: #fdf4f7;
+  --foreground: #4a2237;
   --surface: #ffffff;
-  --line: #e8e3f0;
-  --accent: #9b7dd9;
-  --accent-dark: #7e5cc4;
-  --muted: #7a7386;
+  --blush: #fceaf0;
+  --blush-deep: #f7d9e4;
+  --line: #f1d7e1;
+  --accent: #7a2258;
+  --accent-dark: #55123b;
+  --rose: #c2517f;
+  --rose-soft: #e6a2c0;
+  --muted: #8c6579;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-blush: var(--blush);
+  --color-blush-deep: var(--blush-deep);
   --color-line: var(--line);
   --color-accent: var(--accent);
   --color-accent-dark: var(--accent-dark);
+  --color-rose: var(--rose);
+  --color-rose-soft: var(--rose-soft);
   --color-muted: var(--muted);
   --font-sans: var(--font-vazirmatn);
 }
@@ -24,19 +33,78 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  background-image:
-    radial-gradient(circle at 18% 8%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 42%),
-    radial-gradient(circle at 85% 4%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 38%),
-    radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 45%),
-    radial-gradient(color-mix(in srgb, var(--foreground) 6%, transparent) 1px, transparent 1px);
-  background-size: auto, auto, auto, 28px 28px;
-  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
-  background-attachment: fixed, fixed, fixed, fixed;
 }
 
 ::selection {
   background: var(--accent);
   color: #fff;
+}
+
+/* Latin eyebrow labels (ABOUT US, OUR PRODUCTS …) sit above every section
+   title in the mockups: small, wide-tracked, rose. */
+.eyebrow-latin {
+  font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  color: var(--rose);
+}
+
+/* Brand photography in stock is lavender; the mockups are rose. Nudging the
+   hue keeps one palette across shot and UI without re-shooting anything. */
+.rose-tint {
+  filter: hue-rotate(35deg) saturate(1.15);
+}
+
+.dark-band {
+  background: linear-gradient(255deg, #8a2a60 0%, #6b1b4b 45%, #4a0f33 100%);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.8rem 1.75rem;
+  font-size: 0.875rem;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s,
+    transform 0.25s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-dark);
+}
+
+.btn-outline {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.btn-outline:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-ghost-light {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+
+.btn-ghost-light:hover {
+  background: #fff;
+  color: var(--accent);
 }
 
 @keyframes marquee {

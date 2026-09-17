@@ -10,7 +10,11 @@ export const metadata = {
 export default function RegisterPage() {
   return (
     <div>
-      <PageHero eyebrow="حساب کاربری" title="ثبت‌نام در نیرا" />
+      <PageHero
+        eyebrow="My Account"
+        title="ثبت‌نام در نیرا"
+        image="/img/brand/marble-rose.png"
+      />
       <div className="max-w-md mx-auto px-4 sm:px-8 py-14">
         <FadeUp>
           <RegisterForm />

@@ -13,7 +13,7 @@ export function CustomOrderForm() {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-line bg-surface p-8 text-center"
       >
-        <p className="text-lg font-medium">درخواست شما ثبت شد ✓</p>
+        <p className="text-lg font-medium text-accent">درخواست شما ثبت شد ✓</p>
         <p className="text-muted text-sm mt-2">
           تیم نیرا ظرف ۴۸ ساعت با شما تماس می‌گیرد.
         </p>
@@ -53,17 +53,17 @@ export function CustomOrderForm() {
         />
       </div>
       <div>
-        <label className="block text-sm mb-1.5">توضیح پروژه</label>
+        <label className="block text-sm mb-1.5 text-accent">توضیح پروژه</label>
         <textarea
           required
           rows={4}
           placeholder="هدف پروژه، مناسبت، سبک رایحه‌ی مدنظر و ددلاین را بنویسید..."
-          className="w-full rounded-xl border border-line bg-background px-4 py-3 text-sm outline-none focus:border-accent"
+          className="w-full rounded-xl border border-line bg-blush/60 px-4 py-3 text-sm outline-none focus:border-rose focus:bg-surface transition-colors"
         />
       </div>
       <button
         type="submit"
-        className="w-full rounded-full bg-accent hover:bg-accent-dark transition-colors text-white px-6 py-3 text-sm"
+        className="btn btn-primary w-full justify-center"
       >
         ارسال درخواست
       </button>
@@ -82,12 +82,12 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm mb-1.5">{label}</label>
+      <label className="block text-sm mb-1.5 text-accent">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
         required
-        className="w-full rounded-xl border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
+        className="w-full rounded-xl border border-line bg-blush/60 px-4 py-3 text-sm outline-none focus:border-rose focus:bg-surface transition-colors"
       />
     </div>
   );
@@ -96,8 +96,8 @@ function Field({
 function SelectField({ label, options }: { label: string; options: string[] }) {
   return (
     <div>
-      <label className="block text-sm mb-1.5">{label}</label>
-      <select className="w-full rounded-xl border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-accent">
+      <label className="block text-sm mb-1.5 text-accent">{label}</label>
+      <select className="w-full rounded-xl border border-line bg-blush/60 px-4 py-3 text-sm outline-none focus:border-rose focus:bg-surface transition-colors">
         {options.map((o) => (
           <option key={o}>{o}</option>
         ))}

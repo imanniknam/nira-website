@@ -1,3 +1,5 @@
+import { niraLine } from "./nira-line";
+
 export type Product = {
   id: string;
   slug: string;
@@ -7243,20 +7245,32 @@ export const products: Product[] = [
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
+  return allProducts.find((p) => p.slug === slug);
 }
+
+/**
+ * While the shop only carries نیرا's own line, every listing (home, shop,
+ * catalogue, related products) reads `visibleProducts` instead of the whole
+ * catalogue. Set this to false to put the imported brand catalogue back on the
+ * site — nothing else needs to change.
+ */
+export const NIRA_ONLY = true;
+
+/** Everything the site knows about, نیرا's line first. */
+export const allProducts: Product[] = [...niraLine, ...products];
+
+export const visibleProducts: Product[] = NIRA_ONLY ? niraLine : allProducts;
 
 export function getRelatedProducts(slug: string, count = 4): Product[] {
   const current = getProductBySlug(slug);
-  const sameBrand = current
-    ? products.filter((p) => p.slug !== slug && p.brand === current.brand)
-    : [];
-  const rest = products.filter((p) => p.slug !== slug && !sameBrand.includes(p));
+  const pool = visibleProducts.filter((p) => p.slug !== slug);
+  const sameBrand = current ? pool.filter((p) => p.brand === current.brand) : [];
+  const rest = pool.filter((p) => !sameBrand.includes(p));
   return [...sameBrand, ...rest].slice(0, count);
 }
 
 export function getDiscountedProducts(): Product[] {
-  return products.filter((p) => p.originalPrice && p.originalPrice > p.price);
+  return visibleProducts.filter((p) => p.originalPrice && p.originalPrice > p.price);
 }
 
 export function getDiscountPercent(product: Product): number {
@@ -7278,17 +7292,48 @@ function uniqueSorted(values: string[]): string[] {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b, "fa"));
 }
 
-export const brands: string[] = uniqueSorted(products.map((p) => p.brand));
+export const brands: string[] = uniqueSorted(visibleProducts.map((p) => p.brand));
 
-export const sizeOptions: string[] = uniqueSorted(products.flatMap((p) => p.sizes));
+export const sizeOptions: string[] = uniqueSorted(visibleProducts.flatMap((p) => p.sizes));
 
-export const qualityOptions: string[] = uniqueSorted(products.flatMap((p) => p.qualities));
+export const qualityOptions: string[] = uniqueSorted(
+  visibleProducts.flatMap((p) => p.qualities)
+);
 
 export const concentrationOptions: string[] = uniqueSorted(
-  products.map((p) => p.concentration)
+  visibleProducts.map((p) => p.concentration)
 );
 
 export const priceBounds = {
-  min: Math.min(...products.map((p) => p.price)),
-  max: Math.max(...products.map((p) => p.price)),
+  min: Math.min(...visibleProducts.map((p) => p.price)),
+  max: Math.max(...visibleProducts.map((p) => p.price)),
 };
+
+/**
+ * Scent families are not part of the imported catalogue, so they are derived
+ * from each product's note pyramid. A product can belong to several.
+ */
+export const scentFamilies = ["گلی", "میوه‌ای", "چوبی", "شرقی", "خنک"] as const;
+
+const FAMILY_KEYWORDS: Record<(typeof scentFamilies)[number], string[]> = {
+  "گلی": ["گل", "رز", "یاس", "زنبق", "نرگس", "بنفشه", "شکوفه", "لاله", "ارکیده", "مریم", "نیلوفر", "ماگنولیا"],
+  "میوه‌ای": ["میوه", "سیب", "لیمو", "پرتقال", "توت", "هلو", "آناناس", "انبه", "گلابی", "انار", "انجیر", "آلبالو", "برگاموت", "نارنگی", "گریپ"],
+  "چوبی": ["چوب", "صندل", "سدر", "وتیور", "عود", "پاچولی", "ساج", "بلوط"],
+  "شرقی": ["عنبر", "وانیل", "مشک", "ادویه", "دارچین", "کهربا", "بخور", "زعفران", "تونکا", "کندر", "هل"],
+  "خنک": ["نعنا", "منتول", "دریایی", "آبی", "اکالیپتوس", "سبز", "ریحان", "اسطوخودوس", "لوندر", "کافور"],
+};
+
+const familyCache = new Map<string, string[]>();
+
+export function scentFamiliesOf(product: Product): string[] {
+  const cached = familyCache.get(product.id);
+  if (cached) return cached;
+  const text = `${product.notes.top} ${product.notes.middle} ${product.notes.base}`;
+  const found = scentFamilies.filter((family) =>
+    FAMILY_KEYWORDS[family].some((word) => text.includes(word))
+  );
+  familyCache.set(product.id, found);
+  return found;
+}
+
+export const seasonOptions: string[] = uniqueSorted(visibleProducts.map((p) => p.season));
