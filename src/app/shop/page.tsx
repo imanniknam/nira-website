@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { PageHero } from "@/components/PageHero";
 import { FeatureStrip, type Feature } from "@/components/Sections";
+import { Eyebrow } from "@/components/Eyebrow";
 import { ShopGrid } from "./ShopGrid";
 
 export const metadata = {
@@ -20,16 +20,9 @@ const features: Feature[] = [
 export default function ShopPage() {
   return (
     <div>
-      <PageHero
-        eyebrow="Our Products"
-        title="محصولات نیرا"
-        titleAccent="عطرهایی برای هر لحظه، هر خاطره"
-        description="از رایحه‌های ملایم و روزمره تا عطرهای خاص و ماندگار، مجموعه‌ای از بهترین محصولات نیرا را کشف کنید."
-        image="/img/brand/bloom-rose.png"
-        cta={{ href: "#grid", label: "مشاهده همه محصولات" }}
-      />
-
-      <div className="bg-surface border-b border-line">
+      {/* No banner here on purpose: the catalogue starts straight away, with
+          just a breadcrumb and a compact page heading. */}
+      <div className="bg-blush border-b border-line">
         <nav className="max-w-6xl mx-auto px-4 sm:px-8 py-3 text-xs text-muted flex items-center gap-2">
           <Link href="/" className="hover:text-accent transition-colors">
             خانه
@@ -39,8 +32,19 @@ export default function ShopPage() {
         </nav>
       </div>
 
-      <section id="grid" className="bg-background scroll-mt-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-12 sm:py-14">
+      <section className="bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-10 sm:pt-12">
+          <Eyebrow text="Our Products" />
+          <h1 className="text-2xl sm:text-3xl font-bold text-accent mt-2">
+            محصولات نیرا
+          </h1>
+          <p className="text-muted mt-3 text-sm leading-7 max-w-xl">
+            از رایحه‌های ملایم و روزمره تا عطرهای خاص و ماندگار، مجموعه‌ای از بهترین
+            محصولات نیرا را کشف کنید.
+          </p>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-10">
           <Suspense fallback={null}>
             <ShopGrid />
           </Suspense>

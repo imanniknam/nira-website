@@ -68,7 +68,6 @@ export const events: GalleryEvent[] = [
         body: "کارشناسان نیرا در طول رویداد، بر اساس سلیقه و سبک زندگی هر بازدیدکننده، گزینه‌ی متناسب را پیشنهاد دادند.",
       },
     ],
-    relatedProject: "naft-markazi",
   },
   {
     slug: "zest-collaboration",
@@ -131,7 +130,9 @@ export const events: GalleryEvent[] = [
     location: "ایران",
     date: "تیر ۱۴۰۴",
     image: "/img/archive/ariya-ofogh-pasargad-aventus.png",
+    heroImage: "/img/archive/ariya-hero.png",
     gallery: [
+      "/img/archive/ariya-hero.png",
       "/img/archive/ariya-ofogh-pasargad-aventus.png",
       "/img/products/signature-set-tester-rose.jpg",
     ],

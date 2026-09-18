@@ -16,7 +16,8 @@ export default function ArchivePage() {
         title="آرشیو ما"
         titleAccent="نگاهی به پروژه‌ها و همکاری‌های ما"
         description="در این بخش می‌توانید نمونه‌ی عملی از پروژه‌های انجام‌شده برای برندهای مختلف را ببینید؛ از طراحی عطر و شیشه تا تولید گیفت و محتوای تبلیغاتی."
-        image="/img/brand/petals-rose.png"
+        image="/img/archive/archive-hero.png"
+        wash="light"
         cta={{ href: "/contact", label: "تماس با ما" }}
       />
 

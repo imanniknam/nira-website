@@ -5,8 +5,6 @@ import { Icon } from "@/components/Icon";
 
 const socials = [
   { href: siteInfo.instagram, icon: "instagram" as const, label: "اینستاگرام" },
-  { href: siteInfo.telegram, icon: "telegram" as const, label: "تلگرام" },
-  { href: siteInfo.linkedin, icon: "linkedin" as const, label: "لینکدین" },
 ];
 
 export function Footer() {
@@ -61,13 +59,8 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/15">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between gap-4 text-[11px] text-white/60">
-          <span className="flex items-center gap-2">
-            <span className="text-white/80">فارسی</span>
-            <span className="text-white/30">|</span>
-            <span>EN</span>
-          </span>
-          <span>© ۱۴۰۴ نیرا عطر صحرا. تمامی حقوق محفوظ است.</span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-[11px] text-white/60">
+          © ۱۴۰۴ نیرا عطر صحرا. تمامی حقوق محفوظ است.
         </div>
       </div>
     </footer>

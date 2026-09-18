@@ -123,10 +123,10 @@ export default function Home() {
               لحظه‌های خاص‌اند.
             </p>
             <Link
-              href="/about"
+              href="/services"
               className="inline-flex items-center gap-2 mt-6 text-sm text-rose hover:text-accent transition-colors"
             >
-              بیشتر بدانید
+              خدمات ما
               <Icon name="arrow" className="w-4 h-4" />
             </Link>
           </FadeUp>

@@ -5,7 +5,6 @@ export const nav = [
   { href: "/gallery", label: "گالری" },
   { href: "/services", label: "خدمات ما" },
   { href: "/custom-order", label: "همکاری با شرکت‌ها" },
-  { href: "/about", label: "درباره ما" },
   { href: "/contact", label: "تماس با ما" },
 ];
 
