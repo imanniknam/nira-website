@@ -67,6 +67,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* The banner carries its own wordmark, tagline and feature row, so it is
+          shown whole (no crop, no overlay) rather than used as a hero plate. */}
+      <section className="bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 pb-16 sm:pb-24">
+          <FadeUp>
+            <Link
+              href="/shop"
+              aria-label="مشاهده عطرها و بادی اسپلش‌های نیرا"
+              className="group block relative aspect-[1280/853] rounded-3xl overflow-hidden border border-line"
+            >
+              <Image
+                src="/img/brand/perfume-body-splash-banner.jpg"
+                alt="مجموعه‌ی عطر و بادی اسپلش نیرا عطر صحرا"
+                fill
+                sizes="(max-width: 1152px) 100vw, 1152px"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+              />
+            </Link>
+          </FadeUp>
+        </div>
+      </section>
+
       <section className="relative overflow-hidden dark-band text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-20 grid md:grid-cols-2 gap-10 items-center">
           <FadeUp>

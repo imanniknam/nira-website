@@ -57,10 +57,10 @@ export default function CustomOrderPage() {
 
       <section className="bg-blush">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-20 grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <FadeUp className="relative aspect-[5/4] rounded-2xl overflow-hidden order-2 md:order-1">
+          <FadeUp className="relative aspect-[4/5] sm:aspect-[3/4] rounded-2xl overflow-hidden order-2 md:order-1">
             <Image
-              src="/img/products/nira-versace-crystal-noir.jpg"
-              alt="فرآیند طراحی عطر اختصاصی"
+              src="/img/brand/atelier-counter.jpg"
+              alt="ارزیابی رایحه روی میز کار نیرا"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"

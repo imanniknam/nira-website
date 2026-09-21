@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { FeatureStrip, type Feature } from "@/components/Sections";
 import { Eyebrow } from "@/components/Eyebrow";
@@ -20,8 +21,6 @@ const features: Feature[] = [
 export default function ShopPage() {
   return (
     <div>
-      {/* No banner here on purpose: the catalogue starts straight away, with
-          just a breadcrumb and a compact page heading. */}
       <div className="bg-blush border-b border-line">
         <nav className="max-w-6xl mx-auto px-4 sm:px-8 py-3 text-xs text-muted flex items-center gap-2">
           <Link href="/" className="hover:text-accent transition-colors">
@@ -30,6 +29,23 @@ export default function ShopPage() {
           <span className="text-line">›</span>
           <span className="text-accent">محصولات</span>
         </nav>
+      </div>
+
+      {/* Brand key visual. It carries its own wordmark, tagline and feature row,
+          so it is shown whole — no crop, no overlay text. */}
+      <div className="bg-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-6">
+          <div className="relative aspect-[1280/853] rounded-3xl overflow-hidden border border-line">
+            <Image
+              src="/img/brand/perfume-body-splash-banner-dark.jpg"
+              alt="مجموعه‌ی عطر و بادی اسپلش نیرا عطر صحرا"
+              fill
+              priority
+              sizes="(max-width: 1152px) 100vw, 1152px"
+              className="object-cover"
+            />
+          </div>
+        </div>
       </div>
 
       <section className="bg-background">
