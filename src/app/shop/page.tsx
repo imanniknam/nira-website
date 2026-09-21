@@ -31,22 +31,22 @@ export default function ShopPage() {
         </nav>
       </div>
 
-      {/* Brand key visual. It carries its own wordmark, tagline and feature row,
-          so it is shown whole — no crop, no overlay text. */}
-      <div className="bg-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-6">
-          <div className="relative aspect-[1280/853] rounded-3xl overflow-hidden border border-line">
-            <Image
-              src="/img/brand/perfume-body-splash-banner-dark.jpg"
-              alt="مجموعه‌ی عطر و بادی اسپلش نیرا عطر صحرا"
-              fill
-              priority
-              sizes="(max-width: 1152px) 100vw, 1152px"
-              className="object-cover"
-            />
-          </div>
+      {/* The page hero. The artwork carries its own wordmark, tagline and
+          feature row, so it is never cropped or written over: it sits whole on
+          a black band that matches its own background (sampled from the file),
+          capped in height so it cannot swallow the fold on wide screens. */}
+      <section className="bg-[#050406]">
+        <div className="relative w-full aspect-[1280/853] max-h-[72vh]">
+          <Image
+            src="/img/brand/perfume-body-splash-banner-dark.jpg"
+            alt="مجموعه‌ی عطر و بادی اسپلش نیرا عطر صحرا"
+            fill
+            priority
+            sizes="100vw"
+            className="object-contain"
+          />
         </div>
-      </div>
+      </section>
 
       <section className="bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 pt-10 sm:pt-12">
