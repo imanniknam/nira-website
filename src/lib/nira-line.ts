@@ -15,7 +15,7 @@ export const niraLine: Product[] = [
     slug: "nira-esentric-molecules-o2",
     brand: "NIRA",
     name: "نیرا اسنتریک مولکولز o2",
-    category: "unisex",
+    category: "men",
     price: 2_400_000,
     packaging: "بازرگانی نیرا",
     badge: "پرفروش",
