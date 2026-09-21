@@ -36,6 +36,27 @@ export const eventCategoryLabels: Record<EventCategory, string> = {
   photos: "گالری تصاویر",
 };
 
+/**
+ * Organisations whose exhibitions نیرا has attended. Kept separate from
+ * `events`: these are the bare list the client supplied — no photography,
+ * dates or write-up yet. Give one of them a `GalleryEvent` (and point
+ * `eventSlug` at it) as soon as there is material for a full page.
+ */
+export type Venue = { name: string; eventSlug?: string };
+
+export const venues: Venue[] = [
+  { name: "شرکت ملی نفت ایران — مدیریت اکتشاف" },
+  {
+    name: "شرکت ملی نفت ایران — مناطق مرکزی",
+    eventSlug: "naft-markazi-exhibition",
+  },
+  { name: "شرکت ملی نفت ایران — پژوهشگاه صنعت نفت" },
+  { name: "شهرداری مناطق مختلف تهران" },
+  { name: "شرکت گاز" },
+  { name: "پتروشیمی" },
+  { name: "مجتمع رفاهی و تفریحی نفت — محمودآباد" },
+];
+
 export const events: GalleryEvent[] = [
   {
     slug: "naft-markazi-exhibition",
