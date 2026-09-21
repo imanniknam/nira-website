@@ -7269,19 +7269,6 @@ export function getRelatedProducts(slug: string, count = 4): Product[] {
   return [...sameBrand, ...rest].slice(0, count);
 }
 
-export function getDiscountedProducts(): Product[] {
-  return visibleProducts.filter((p) => p.originalPrice && p.originalPrice > p.price);
-}
-
-export function getDiscountPercent(product: Product): number {
-  if (!product.originalPrice) return 0;
-  return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
-}
-
-export function formatPrice(price: number): string {
-  return price.toLocaleString("fa-IR");
-}
-
 export const categoryLabels: Record<Product["category"], string> = {
   men: "مردانه",
   women: "زنانه",
@@ -7303,11 +7290,6 @@ export const qualityOptions: string[] = uniqueSorted(
 export const concentrationOptions: string[] = uniqueSorted(
   visibleProducts.map((p) => p.concentration)
 );
-
-export const priceBounds = {
-  min: Math.min(...visibleProducts.map((p) => p.price)),
-  max: Math.max(...visibleProducts.map((p) => p.price)),
-};
 
 /**
  * Scent families are not part of the imported catalogue, so they are derived

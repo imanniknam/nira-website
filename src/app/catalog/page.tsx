@@ -14,7 +14,7 @@ export default function CatalogPage() {
       <PageHero
         eyebrow="Catalog"
         title="کاتالوگ محصولات"
-        description="مرور بصری و لوکس‌وار کل مجموعه‌ی نیرا — بدون قیمت، برای معرفی و الهام."
+        description="مرور بصری و لوکس‌وار کل مجموعه‌ی نیرا، برای معرفی و الهام."
         image="/img/brand/petals-rose.png"
       />
 

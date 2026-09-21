@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import {
   brands,
   concentrationOptions,
-  priceBounds,
   visibleProducts,
   qualityOptions,
   scentFamilies,
@@ -19,49 +18,20 @@ import { Icon } from "@/components/Icon";
 
 type CategoryFilter = "all" | Product["category"];
 type PackagingFilter = "all" | Product["packaging"];
-type Availability = "all" | "onsale" | "instock";
-type Sort = "latest" | "cheap" | "expensive" | "discount";
+type Availability = "all" | "instock";
+type Sort = "latest" | "name";
 
 const SORTS: { key: Sort; label: string }[] = [
   { key: "latest", label: "مرتب‌سازی بر اساس آخرین" },
-  { key: "cheap", label: "مرتب‌سازی بر اساس ارزان‌ترین" },
-  { key: "expensive", label: "مرتب‌سازی بر اساس گران‌ترین" },
-  { key: "discount", label: "مرتب‌سازی بر اساس بیشترین تخفیف" },
+  { key: "name", label: "مرتب‌سازی بر اساس نام" },
 ];
 
 const PER_PAGE_OPTIONS = [12, 24, 36];
 const DEFAULT_PER_PAGE = 12;
 
-function discountPercent(p: Product) {
-  if (!p.originalPrice) return 0;
-  return (p.originalPrice - p.price) / p.originalPrice;
-}
-
 function csv(value: string | null): string[] {
   return value ? value.split(",").filter(Boolean) : [];
 }
-
-function toLatinDigits(value: string) {
-  return value.replace(/[۰-۹]/g, (d) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)));
-}
-
-function roundDown(n: number) {
-  return Math.floor(n / 10000) * 10000;
-}
-
-function roundUp(n: number) {
-  return Math.ceil(n / 10000) * 10000;
-}
-
-const MIN_BOUND = roundDown(priceBounds.min);
-const MAX_BOUND = roundUp(priceBounds.max);
-
-const PRICE_BANDS = [
-  { label: "همه قیمت‌ها", min: MIN_BOUND, max: MAX_BOUND },
-  { label: "زیر ۵,۰۰۰,۰۰۰ تومان", min: MIN_BOUND, max: 5_000_000 },
-  { label: "۵,۰۰۰,۰۰۰ تا ۱۵,۰۰۰,۰۰۰ تومان", min: 5_000_000, max: 15_000_000 },
-  { label: "بیش از ۱۵,۰۰۰,۰۰۰ تومان", min: 15_000_000, max: MAX_BOUND },
-];
 
 type Filters = {
   category: CategoryFilter;
@@ -73,8 +43,6 @@ type Filters = {
   scents: string[];
   seasons: string[];
   availability: Availability;
-  priceMin: number;
-  priceMax: number;
   query: string;
 };
 
@@ -112,9 +80,7 @@ function matches(p: Product, f: Filters, except?: Facet) {
     return false;
   if (except !== "seasons" && f.seasons.length > 0 && !f.seasons.includes(p.season))
     return false;
-  if (except !== "availability" && f.availability === "onsale" && !p.originalPrice) return false;
   if (except !== "availability" && f.availability === "instock" && !p.inStock) return false;
-  if (except !== "priceMin" && (p.price < f.priceMin || p.price > f.priceMax)) return false;
   if (f.query) {
     const q = f.query.trim().toLowerCase();
     if (q && !p.name.toLowerCase().includes(q) && !p.brand.toLowerCase().includes(q))
@@ -252,7 +218,7 @@ export function ShopGrid() {
   })();
   const availability = (() => {
     const v = searchParams.get("avail");
-    return v === "onsale" || v === "instock" ? v : "all";
+    return v === "instock" ? v : "all";
   })();
   const sort = (() => {
     const v = searchParams.get("sort");
@@ -263,21 +229,6 @@ export function ShopGrid() {
     return PER_PAGE_OPTIONS.includes(v) ? v : DEFAULT_PER_PAGE;
   })();
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
-
-  const urlPriceMin = Number(searchParams.get("priceMin") ?? MIN_BOUND);
-  const urlPriceMax = Number(searchParams.get("priceMax") ?? MAX_BOUND);
-
-  // Typing in the two amount boxes updates local state so they stay responsive;
-  // the URL only catches up once the value is committed. Re-syncing during
-  // render (rather than in an effect) keeps them from lagging a frame behind.
-  const [priceMin, setPriceMin] = useState(urlPriceMin);
-  const [priceMax, setPriceMax] = useState(urlPriceMax);
-  const [syncedPrice, setSyncedPrice] = useState({ min: urlPriceMin, max: urlPriceMax });
-  if (syncedPrice.min !== urlPriceMin || syncedPrice.max !== urlPriceMax) {
-    setSyncedPrice({ min: urlPriceMin, max: urlPriceMax });
-    setPriceMin(urlPriceMin);
-    setPriceMax(urlPriceMax);
-  }
 
   const brandParam = searchParams.get("brand");
   const sizeParam = searchParams.get("size");
@@ -298,8 +249,6 @@ export function ShopGrid() {
       scents: csv(scentParam),
       seasons: csv(seasonParam),
       availability,
-      priceMin: urlPriceMin,
-      priceMax: urlPriceMax,
       query,
     }),
     [
@@ -312,8 +261,6 @@ export function ShopGrid() {
       scentParam,
       seasonParam,
       availability,
-      urlPriceMin,
-      urlPriceMax,
       query,
     ]
   );
@@ -356,20 +303,10 @@ export function ShopGrid() {
       else params.set(key, [...set].join(","));
     });
 
-  const commitPrice = (min: number, max: number) =>
-    apply((params) => {
-      if (min <= MIN_BOUND) params.delete("priceMin");
-      else params.set("priceMin", String(min));
-      if (max >= MAX_BOUND) params.delete("priceMax");
-      else params.set("priceMax", String(max));
-    });
-
   const filtered = useMemo(() => {
     const list = visibleProducts.filter((p) => matches(p, filters));
     const sorted = [...list];
-    if (sort === "cheap") sorted.sort((a, b) => a.price - b.price);
-    else if (sort === "expensive") sorted.sort((a, b) => b.price - a.price);
-    else if (sort === "discount") sorted.sort((a, b) => discountPercent(b) - discountPercent(a));
+    if (sort === "name") sorted.sort((a, b) => a.name.localeCompare(b.name, "fa"));
     return sorted;
   }, [filters, sort]);
 
@@ -412,15 +349,11 @@ export function ShopGrid() {
     filters.qualities.length +
     filters.concentrations.length +
     filters.scents.length +
-    filters.seasons.length +
-    (urlPriceMin > MIN_BOUND || urlPriceMax < MAX_BOUND ? 1 : 0);
+    filters.seasons.length;
 
   const visibleBrands = brandQuery.trim()
     ? brands.filter((b) => b.toLowerCase().includes(brandQuery.trim().toLowerCase()))
     : brands;
-
-  const activeBand =
-    PRICE_BANDS.findIndex((b) => b.min === urlPriceMin && b.max === urlPriceMax) ?? 0;
 
   return (
     <div className="grid lg:grid-cols-[250px_1fr] gap-6 lg:gap-8">
@@ -478,47 +411,6 @@ export function ShopGrid() {
             />
           </FilterSection>
 
-          <FilterSection title="قیمت">
-            {PRICE_BANDS.map((band, i) => (
-              <CheckRow
-                key={band.label}
-                type="radio"
-                label={band.label}
-                checked={activeBand === i}
-                onToggle={() => {
-                  setPriceMin(band.min);
-                  setPriceMax(band.max);
-                  commitPrice(band.min, band.max);
-                }}
-              />
-            ))}
-            <div className="flex items-center gap-2 mt-3">
-              <input
-                type="text"
-                inputMode="numeric"
-                value={priceMin}
-                onChange={(e) =>
-                  setPriceMin(Number(toLatinDigits(e.target.value).replace(/\D/g, "")) || 0)
-                }
-                placeholder="از"
-                aria-label="حداقل قیمت"
-                className="min-w-0 flex-1 rounded-lg border border-line bg-blush/50 px-2 py-1.5 text-[11px] outline-none focus:border-rose"
-              />
-              <span className="text-muted text-[11px]">تا</span>
-              <input
-                type="text"
-                inputMode="numeric"
-                value={priceMax}
-                onChange={(e) =>
-                  setPriceMax(Number(toLatinDigits(e.target.value).replace(/\D/g, "")) || 0)
-                }
-                placeholder="تا"
-                aria-label="حداکثر قیمت"
-                className="min-w-0 flex-1 rounded-lg border border-line bg-blush/50 px-2 py-1.5 text-[11px] outline-none focus:border-rose"
-              />
-            </div>
-          </FilterSection>
-
           <FilterSection title="حجم">
             <CheckList
               options={sizeOptions}
@@ -573,20 +465,14 @@ export function ShopGrid() {
             ))}
           </FilterSection>
 
-          <FilterSection title="موجودی و حراج" defaultOpen={false}>
-            {(
-              [
-                { key: "onsale", label: "فروش ویژه" },
-                { key: "instock", label: "موجود در انبار" },
-              ] as { key: Exclude<Availability, "all">; label: string }[]
-            ).map((f) => (
-              <CheckRow
-                key={f.key}
-                label={f.label}
-                checked={availability === f.key}
-                onToggle={() => setParam("avail", availability === f.key ? null : f.key)}
-              />
-            ))}
+          <FilterSection title="موجودی" defaultOpen={false}>
+            <CheckRow
+              label="موجود در انبار"
+              checked={availability === "instock"}
+              onToggle={() =>
+                setParam("avail", availability === "instock" ? null : "instock")
+              }
+            />
           </FilterSection>
 
           <FilterSection
@@ -619,10 +505,7 @@ export function ShopGrid() {
 
           <div className="py-4">
             <button
-              onClick={() => {
-                commitPrice(Math.min(priceMin, priceMax), Math.max(priceMin, priceMax));
-                setShowFilters(false);
-              }}
+              onClick={() => setShowFilters(false)}
               className="btn btn-primary w-full justify-center"
             >
               <Icon name="filter" className="w-4 h-4" />

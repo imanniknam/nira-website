@@ -3,8 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   categoryLabels,
-  formatPrice,
-  getDiscountPercent,
   getProductBySlug,
   getRelatedProducts,
   visibleProducts,
@@ -96,23 +94,6 @@ export default async function ProductPage({
               ? "پک اورجینال (بسته‌بندی برند اصلی)"
               : "پک بازرگانی نیرا عطر صحرا"}
           </span>
-
-          <div className="mt-6 flex items-center gap-3">
-            <div className="text-2xl font-bold text-accent">
-              {formatPrice(product.price)}
-              <small className="text-muted text-sm mr-1 font-normal">تومان</small>
-            </div>
-            {product.originalPrice && (
-              <>
-                <span className="text-muted line-through text-sm">
-                  {formatPrice(product.originalPrice)}
-                </span>
-                <span className="rounded-full bg-rose px-2.5 py-1 text-xs text-white">
-                  ٪{getDiscountPercent(product).toLocaleString("fa-IR")} تخفیف
-                </span>
-              </>
-            )}
-          </div>
 
           <div className="mt-6">
             <AddToCartButton product={product} />

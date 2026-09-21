@@ -5,10 +5,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useCart } from "@/lib/cart-context";
-import { formatPrice } from "@/lib/products";
 
 export function CartView() {
-  const { items, removeItem, setQty, totalPrice, clear } = useCart();
+  const { items, removeItem, setQty, totalCount, clear } = useCart();
   const [checkedOut, setCheckedOut] = useState(false);
 
   if (checkedOut) {
@@ -63,7 +62,7 @@ export function CartView() {
             <div className="flex-1 min-w-0">
               <span className="text-xs text-muted">{item.brand}</span>
               <h3 className="font-medium text-sm truncate">{item.name}</h3>
-              <div className="flex items-center justify-between mt-2">
+              <div className="flex items-center mt-2">
                 <div className="flex items-center gap-3 rounded-full border border-line px-3 py-1">
                   <button
                     onClick={() => setQty(item.slug, item.qty - 1)}
@@ -81,10 +80,6 @@ export function CartView() {
                     +
                   </button>
                 </div>
-                <span className="text-sm">
-                  {formatPrice(item.price * item.qty)}
-                  <small className="text-muted text-xs mr-1">تومان</small>
-                </span>
               </div>
             </div>
             <button
@@ -105,12 +100,12 @@ export function CartView() {
       <div className="rounded-2xl border border-line bg-surface p-6 h-fit space-y-4">
         <h3 className="font-medium text-accent">خلاصه سفارش</h3>
         <div className="flex items-center justify-between text-sm">
-          <span className="text-muted">جمع کل</span>
-          <span>
-            {formatPrice(totalPrice)}
-            <small className="text-muted text-xs mr-1">تومان</small>
-          </span>
+          <span className="text-muted">تعداد اقلام</span>
+          <span>{totalCount.toLocaleString("fa-IR")}</span>
         </div>
+        <p className="text-xs text-muted leading-6">
+          پس از ثبت سفارش، همکاران ما برای اعلام شرایط و هماهنگی با شما تماس می‌گیرند.
+        </p>
         <button
           onClick={() => setCheckedOut(true)}
           className="btn btn-primary w-full justify-center"

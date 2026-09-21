@@ -39,7 +39,6 @@ export function AddToCartButton({ product }: { product: Product }) {
               name: product.name,
               brand: product.brand,
               image: product.image,
-              price: product.price,
             },
             qty
           );

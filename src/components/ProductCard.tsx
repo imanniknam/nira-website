@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import type { Product } from "@/lib/products";
-import { categoryLabels, formatPrice, getDiscountPercent } from "@/lib/products";
+import { categoryLabels } from "@/lib/products";
 import { useCart } from "@/lib/cart-context";
 import { Icon } from "@/components/Icon";
 
@@ -39,7 +39,6 @@ export function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [liked, setLiked] = useState(false);
-  const discount = getDiscountPercent(product);
   const rating = placeholderRating(product.slug);
 
   return (
@@ -59,11 +58,6 @@ export function ProductCard({ product }: { product: Product }) {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </Link>
-          {discount > 0 && (
-            <span className="absolute top-3 right-3 z-10 rounded-full bg-rose px-2.5 py-1 text-[11px] text-white">
-              ٪{discount.toLocaleString("fa-IR")} تخفیف
-            </span>
-          )}
           <button
             onClick={() => setLiked((v) => !v)}
             aria-label="افزودن به علاقه‌مندی‌ها"
@@ -89,18 +83,6 @@ export function ProductCard({ product }: { product: Product }) {
             </span>
           </div>
 
-          <div className="mt-2">
-            {product.originalPrice && (
-              <span className="block text-[11px] text-muted line-through">
-                {formatPrice(product.originalPrice)}
-              </span>
-            )}
-            <span className="text-sm font-bold text-accent">
-              {formatPrice(product.price)}
-              <small className="font-normal text-muted text-xs mr-1">تومان</small>
-            </span>
-          </div>
-
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={() => {
@@ -109,7 +91,6 @@ export function ProductCard({ product }: { product: Product }) {
                 name: product.name,
                 brand: product.brand,
                 image: product.image,
-                price: product.price,
               });
               setAdded(true);
               setTimeout(() => setAdded(false), 1400);
