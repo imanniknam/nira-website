@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/PageHero";
@@ -6,7 +5,7 @@ import { FadeUp, Stagger, StaggerItem } from "@/components/MotionSection";
 import { CtaBand } from "@/components/Sections";
 import { Icon } from "@/components/Icon";
 import { categoryLabels, getProject, getRelatedProjects, projects } from "@/lib/projects";
-import { events } from "@/lib/events";
+import { Banner } from "@/components/Banner";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -33,7 +32,6 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   const related = getRelatedProjects(project.slug);
-  const event = events.find((e) => e.relatedProject === project.slug);
   const meta = [
     { icon: "building" as const, label: "کارفرما", value: project.client },
     { icon: "calendar" as const, label: "سال", value: project.year },
@@ -46,7 +44,7 @@ export default async function ProjectPage({
         eyebrow="Project"
         title={project.title}
         description={project.desc}
-        image={project.heroImage ?? "/img/brand/petals-rose.png"}
+        image={project.heroImage ?? project.image ?? "/img/brand/petals-rose.png"}
         cta={{ href: "/custom-order", label: "پروژه مشابه برای برند شما" }}
       />
 
@@ -66,14 +64,15 @@ export default async function ProjectPage({
 
       <section className="bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-14 sm:py-16 grid md:grid-cols-[1.15fr_1fr] gap-10 lg:gap-14 items-start">
-          <FadeUp className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-blush border border-line">
-            <Image
-              src={project.image}
+          <FadeUp>
+            <Banner
+              src={project.image ?? project.heroImage}
               alt={project.title}
-              fill
+              label={project.client}
               sizes="(max-width: 768px) 100vw, 55vw"
-              className="object-contain p-4"
+              fit="contain"
               priority
+              className="aspect-[4/3] rounded-2xl border border-line"
             />
           </FadeUp>
 
@@ -103,15 +102,6 @@ export default async function ProjectPage({
               ))}
             </ul>
 
-            {event && (
-              <Link
-                href={`/gallery/${event.slug}`}
-                className="inline-flex items-center gap-2 mt-7 text-sm text-rose hover:text-accent transition-colors"
-              >
-                مشاهده‌ی تصاویر این پروژه در گالری
-                <Icon name="arrow" className="w-4 h-4" />
-              </Link>
-            )}
           </FadeUp>
         </div>
       </section>
@@ -166,15 +156,14 @@ export default async function ProjectPage({
                         />
                       </span>
                     </div>
-                    <div className="relative w-[42%] shrink-0 bg-blush">
-                      <Image
-                        src={p.image}
-                        alt={p.title}
-                        fill
-                        sizes="(max-width: 640px) 45vw, 22vw"
-                        className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
+                    <Banner
+                      src={p.image ?? p.heroImage}
+                      alt={p.title}
+                      label={p.client}
+                      sizes="(max-width: 640px) 45vw, 22vw"
+                      fit="contain"
+                      className="w-[42%] shrink-0"
+                    />
                   </Link>
                 </StaggerItem>
               ))}

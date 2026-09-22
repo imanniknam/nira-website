@@ -8,6 +8,7 @@ import type { Product } from "@/lib/products";
 import { categoryLabels } from "@/lib/products";
 import { useCart } from "@/lib/cart-context";
 import { Icon } from "@/components/Icon";
+import { priceRange } from "@/lib/pricing";
 
 /**
  * Placeholder score so the card can carry the star row from the design. It is
@@ -76,6 +77,10 @@ export function ProductCard({ product }: { product: Product }) {
             عطر {categoryLabels[product.category]}
           </span>
 
+          <p className="text-xs text-accent mt-2">
+            {priceRange.min} تا {priceRange.max} {priceRange.unit}
+          </p>
+
           <div className="flex items-center justify-center gap-2 mt-2">
             <Stars value={rating} />
             <span className="text-[11px] text-muted">
@@ -98,7 +103,7 @@ export function ProductCard({ product }: { product: Product }) {
             className="mt-4 w-full rounded-full bg-accent hover:bg-accent-dark transition-colors text-white py-2.5 text-xs flex items-center justify-center gap-2"
           >
             <Icon name={added ? "check" : "bag"} className="w-4 h-4" />
-            {added ? "افزوده شد" : "افزودن به سبد"}
+            {added ? "افزوده شد" : "درخواست خرید"}
           </motion.button>
         </div>
       </div>

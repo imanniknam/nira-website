@@ -17,9 +17,9 @@ export function CartView() {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-line bg-surface p-10 text-center max-w-md mx-auto"
       >
-        <p className="text-lg font-medium text-accent">سفارش شما ثبت شد ✓</p>
+        <p className="text-lg font-medium text-accent">درخواست شما ثبت شد ✓</p>
         <p className="text-muted text-sm mt-2">
-          همکاران ما به‌زودی برای هماهنگی ارسال با شما تماس می‌گیرند.
+          کارشناسان ما به‌زودی برای اعلام قیمت نهایی و تکمیل خرید با شما تماس می‌گیرند.
         </p>
         <Link
           href="/shop"
@@ -34,7 +34,7 @@ export function CartView() {
   if (items.length === 0) {
     return (
       <div className="text-center py-10">
-        <p className="text-muted">سبد خرید شما خالی است.</p>
+        <p className="text-muted">لیست درخواست شما خالی است.</p>
         <Link
           href="/shop"
           className="btn btn-outline mt-6"
@@ -93,24 +93,24 @@ export function CartView() {
         ))}
 
         <button onClick={clear} className="text-xs text-muted hover:text-accent transition-colors">
-          خالی کردن سبد خرید
+          خالی کردن لیست
         </button>
       </div>
 
       <div className="rounded-2xl border border-line bg-surface p-6 h-fit space-y-4">
-        <h3 className="font-medium text-accent">خلاصه سفارش</h3>
+        <h3 className="font-medium text-accent">خلاصه درخواست</h3>
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted">تعداد اقلام</span>
           <span>{totalCount.toLocaleString("fa-IR")}</span>
         </div>
         <p className="text-xs text-muted leading-6">
-          پس از ثبت سفارش، همکاران ما برای اعلام شرایط و هماهنگی با شما تماس می‌گیرند.
+          قیمت هر عطر بین ۵٫۵ تا ۶٫۵ میلیون تومان است. پس از ثبت درخواست، کارشناسان ما برای اعلام قیمت قطعی و نهایی‌کردن خرید با شما تماس می‌گیرند.
         </p>
         <button
           onClick={() => setCheckedOut(true)}
           className="btn btn-primary w-full justify-center"
         >
-          ثبت سفارش
+          ثبت درخواست و تماس کارشناس
         </button>
       </div>
     </div>

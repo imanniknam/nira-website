@@ -11,6 +11,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { FadeUp, Stagger, StaggerItem } from "@/components/MotionSection";
 import { ProductTabs } from "./ProductTabs";
 import { AddToCartButton } from "./AddToCartButton";
+import { priceRange } from "@/lib/pricing";
 
 export function generateStaticParams() {
   return visibleProducts.map((p) => ({ slug: p.slug }));
@@ -94,6 +95,14 @@ export default async function ProductPage({
               ? "پک اورجینال (بسته‌بندی برند اصلی)"
               : "پک بازرگانی نیرا عطر صحرا"}
           </span>
+
+          <div className="mt-5">
+            <p className="text-xl font-bold text-accent">
+              {priceRange.min} تا {priceRange.max}{" "}
+              <span className="text-sm font-normal text-muted">{priceRange.unit}</span>
+            </p>
+            <p className="text-xs text-muted mt-1.5 leading-6">{priceRange.note}</p>
+          </div>
 
           <div className="mt-6">
             <AddToCartButton product={product} />

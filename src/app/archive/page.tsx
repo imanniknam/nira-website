@@ -5,7 +5,7 @@ import { ArchiveGrid } from "./ArchiveGrid";
 export const metadata = {
   title: "آرشیو پروژه‌ها | نیرا",
   description:
-    "نگاهی به پروژه‌ها و همکاری‌های نیرا با برندهای مختلف: طراحی عطر، شیشه، گیفت سازمانی و محتوای تبلیغاتی.",
+    "پروژه‌های نیرا برای زست المان، فدرال، آریا پروفیل چابهار، اسپارک کمپانی و آریا افق پاسارگاد.",
 };
 
 export default function ArchivePage() {

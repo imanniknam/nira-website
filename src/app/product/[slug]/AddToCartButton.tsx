@@ -56,7 +56,7 @@ export function AddToCartButton({ product }: { product: Product }) {
             transition={{ duration: 0.2 }}
             className="block"
           >
-            {added ? "به سبد اضافه شد ✓" : "افزودن به سبد خرید"}
+            {added ? "به لیست درخواست اضافه شد ✓" : "افزودن به درخواست خرید"}
           </motion.span>
         </AnimatePresence>
       </motion.button>

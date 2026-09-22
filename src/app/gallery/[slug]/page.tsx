@@ -5,13 +5,8 @@ import { PageHero } from "@/components/PageHero";
 import { FadeUp, Stagger, StaggerItem } from "@/components/MotionSection";
 import { CtaBand } from "@/components/Sections";
 import { Icon } from "@/components/Icon";
-import {
-  eventCategoryLabels,
-  events,
-  getEvent,
-  getRelatedEvents,
-} from "@/lib/events";
-import { getProject } from "@/lib/projects";
+import { events, getEvent, getRelatedEvents } from "@/lib/events";
+import { Banner } from "@/components/Banner";
 
 export function generateStaticParams() {
   return events.map((e) => ({ slug: e.slug }));
@@ -38,15 +33,10 @@ export default async function EventPage({
   if (!event) notFound();
 
   const related = getRelatedEvents(event.slug);
-  const project = event.relatedProject ? getProject(event.relatedProject) : undefined;
   const meta = [
     { icon: "pin" as const, label: "محل", value: event.location },
     { icon: "calendar" as const, label: "زمان", value: event.date },
-    {
-      icon: "grid" as const,
-      label: "دسته‌بندی",
-      value: eventCategoryLabels[event.category],
-    },
+    { icon: "building" as const, label: "میزبان", value: event.venue },
   ];
 
   return (
@@ -54,7 +44,7 @@ export default async function EventPage({
       <PageHero
         eyebrow="Gallery"
         title={event.title}
-        description={event.meta}
+        description={event.venue}
         image={event.heroImage ?? "/img/brand/marble-rose.png"}
         cta={{ href: "/contact", label: "تماس با ما" }}
       />
@@ -75,14 +65,15 @@ export default async function EventPage({
 
       <section className="bg-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-14 sm:py-16 grid md:grid-cols-[1.15fr_1fr] gap-10 lg:gap-14 items-start">
-          <FadeUp className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-blush border border-line">
-            <Image
-              src={event.image}
+          <FadeUp>
+            <Banner
+              src={event.image ?? event.heroImage}
               alt={event.title}
-              fill
+              label={event.venue}
               sizes="(max-width: 768px) 100vw, 55vw"
-              className="object-contain p-4"
+              fit="contain"
               priority
+              className="aspect-[4/3] rounded-2xl border border-line"
             />
           </FadeUp>
 
@@ -109,15 +100,6 @@ export default async function EventPage({
               ))}
             </ul>
 
-            {project && (
-              <Link
-                href={`/archive/${project.slug}`}
-                className="inline-flex items-center gap-2 mt-7 text-sm text-rose hover:text-accent transition-colors"
-              >
-                مشاهده‌ی پروژه‌ی مرتبط در آرشیو
-                <Icon name="arrow" className="w-4 h-4" />
-              </Link>
-            )}
           </FadeUp>
         </div>
       </section>
@@ -189,18 +171,17 @@ export default async function EventPage({
                     href={`/gallery/${e.slug}`}
                     className="group block h-full rounded-2xl bg-surface border border-line overflow-hidden transition-all duration-300 hover:border-rose-soft hover:shadow-[0_22px_45px_-30px_rgba(122,34,88,0.55)]"
                   >
-                    <div className="relative aspect-[16/9] bg-blush">
-                      <Image
-                        src={e.image}
-                        alt={e.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 45vw"
-                        className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
+                    <Banner
+                      src={e.image ?? e.heroImage}
+                      alt={e.title}
+                      label={e.venue}
+                      sizes="(max-width: 640px) 100vw, 45vw"
+                      fit="contain"
+                      className="aspect-[16/9]"
+                    />
                     <div className="p-5">
                       <b className="block text-accent text-sm leading-7">{e.title}</b>
-                      <span className="block text-xs text-muted mt-1.5">{e.meta}</span>
+                      <span className="block text-xs text-muted mt-1.5">{e.venue}</span>
                     </div>
                   </Link>
                 </StaggerItem>

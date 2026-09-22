@@ -1,50 +1,50 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { TabBar } from "@/components/TabBar";
+import { Banner } from "@/components/Banner";
 import { Icon } from "@/components/Icon";
-import { eventFilters, events } from "@/lib/events";
+import { events } from "@/lib/events";
 
 export function GalleryGrid() {
-  const [active, setActive] = useState<string>("all");
-  const shown = active === "all" ? events : events.filter((e) => e.category === active);
-
   return (
-    <div>
-      <TabBar tabs={eventFilters} active={active} onChange={setActive} />
-
-      <div className="grid sm:grid-cols-2 gap-5 mt-10">
-        {shown.map((e) => (
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+      {events.map((e, i) => {
+        const wide = i === 0;
+        return (
           <motion.article
             key={e.slug}
-            layout
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.45, delay: (i % 3) * 0.07 }}
+            className={wide ? "lg:col-span-2" : ""}
           >
             <Link
               href={`/gallery/${e.slug}`}
-              className="group block h-full rounded-2xl bg-surface border border-line overflow-hidden transition-all duration-300 hover:border-rose-soft hover:shadow-[0_22px_45px_-30px_rgba(122,34,88,0.55)]"
+              className="group relative block h-full min-h-[260px] rounded-3xl overflow-hidden border border-line transition-shadow duration-300 hover:shadow-[0_26px_50px_-32px_rgba(122,34,88,0.7)]"
             >
-              <div className="relative aspect-[16/9] bg-blush">
-                <Image
-                  src={e.image}
-                  alt={e.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 45vw"
-                  className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
-                />
+              <div className="absolute inset-0">
+              <Banner
+                src={e.heroImage ?? e.image}
+                alt={e.title}
+                label={e.venue}
+                hideLabel
+                sizes={wide ? "(max-width: 1024px) 100vw, 760px" : "(max-width: 640px) 100vw, 380px"}
+                className="h-full w-full [&_img]:transition-transform [&_img]:duration-700 group-hover:[&_img]:scale-105"
+              />
               </div>
-              <div className="p-5">
-                <b className="block text-accent text-sm leading-7 group-hover:text-accent-dark transition-colors">
-                  {e.title}
-                </b>
+              {(e.heroImage ?? e.image) && (
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2c0a1f]/85 via-[#2c0a1f]/25 to-transparent" />
+              )}
+              <span className="absolute top-4 right-4 text-xs font-bold text-white/80 tabular-nums">
+                {(i + 1).toLocaleString("fa-IR", { minimumIntegerDigits: 2 })}
+              </span>
+              <div className="absolute inset-x-0 bottom-0 p-5">
+                <b className="block text-white leading-7">{e.venue}</b>
                 <div className="flex items-center justify-between gap-3 mt-2">
-                  <span className="text-xs text-muted">{e.meta}</span>
-                  <span className="flex items-center gap-1.5 text-xs text-rose">
+                  <span className="text-[11px] text-white/70">{e.date}</span>
+                  <span className="flex items-center gap-1.5 text-xs text-white">
                     مشاهده
                     <Icon
                       name="arrow"
@@ -55,14 +55,8 @@ export function GalleryGrid() {
               </div>
             </Link>
           </motion.article>
-        ))}
-      </div>
-
-      {shown.length === 0 && (
-        <p className="text-center text-sm text-muted mt-12">
-          رویدادی در این دسته ثبت نشده است.
-        </p>
-      )}
+        );
+      })}
     </div>
   );
 }
