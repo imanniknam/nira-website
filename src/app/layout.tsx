@@ -1,31 +1,45 @@
-import type { Metadata } from "next";
-import { Vazirmatn } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import "./globals.css";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { CartProvider } from "@/lib/cart-context";
+import { getT } from "@/lib/content";
 
-const vazirmatn = Vazirmatn({
+// Vazirmatn (OFL), bundled locally so builds and page loads never depend on
+// Google Fonts — which is often unreachable from servers inside Iran.
+const vazirmatn = localFont({
+  src: "./fonts/vazirmatn-arabic-wght-normal.woff2",
   variable: "--font-vazirmatn",
-  subsets: ["arabic"],
+  weight: "100 900",
+  display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "نیرا | رایحه‌ای که هویت شماست",
-  description:
-    "نیرا، خانه‌ی رایحه‌های ماندگار و اختصاصی. از عطرهای اورجینال برندهای جهانی تا طراحی و تولید عطر سازمانی برای برند شما.",
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#7a2258",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+  const siteUrl = process.env.SITE_URL;
+  return {
+    ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
+    title: t("site.seo.title"),
+    description: t("site.seo.desc"),
+    openGraph: {
+      title: t("site.seo.title"),
+      description: t("site.seo.desc"),
+      siteName: t("site.name"),
+      locale: "fa_IR",
+      type: "website",
+      images: [t("site.ogImage")],
+    },
+  };
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fa" dir="rtl" className={`${vazirmatn.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CartProvider>
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

@@ -1,0 +1,27 @@
+name: nira
+services:
+  web:
+    build:
+      context: .
+      args:
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmjs.org/}
+    image: nira-web:latest
+    container_name: nira-web
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATA_DIR: /data
+    # Loopback only: the shared Caddy on this server (or any reverse proxy) is
+    # the public entrance. Port 3500 is free next to asastudy (3400) and lamia (8081).
+    ports:
+      - "${NIRA_BIND:-127.0.0.1}:${NIRA_PORT:-3500}:3000"
+    volumes:
+      - ./data:/data
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

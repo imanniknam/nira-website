@@ -1,0 +1,15 @@
+# Add this block to /opt/edge/Caddyfile (the shared Caddy), replacing the domain,
+# then reload without downtime:
+#   docker exec edge-caddy caddy reload --config /etc/caddy/Caddyfile
+#
+# The domain's A record must point to 85.198.54.86 first; Caddy then fetches the
+# HTTPS certificate by itself.
+
+nira.example.com, www.nira.example.com {
+	encode zstd gzip
+	# Uploaded product photos can be large; allow them through the proxy.
+	request_body {
+		max_size 25MB
+	}
+	reverse_proxy 127.0.0.1:3500
+}

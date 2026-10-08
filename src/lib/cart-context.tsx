@@ -15,6 +15,8 @@ export type CartItem = {
   name: string;
   brand: string;
   image: string;
+  /** Unit price in tomans at the time it was added (display only; the server re-prices). */
+  price?: number;
   qty: number;
 };
 
@@ -25,6 +27,8 @@ type CartContextValue = {
   setQty: (slug: string, qty: number) => void;
   clear: () => void;
   totalCount: number;
+  /** False until the saved cart has been read from localStorage. */
+  hydrated: boolean;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -83,7 +87,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, setQty, clear, totalCount }}
+      value={{ items, addItem, removeItem, setQty, clear, totalCount, hydrated }}
     >
       {children}
     </CartContext.Provider>

@@ -4,43 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import type { Product } from "@/lib/products";
-import { categoryLabels } from "@/lib/products";
+import { productCategoryLabels, type Product } from "@/lib/types";
 import { useCart } from "@/lib/cart-context";
 import { Icon } from "@/components/Icon";
-import { priceRange } from "@/lib/pricing";
-
-/**
- * Placeholder score so the card can carry the star row from the design. It is
- * derived from the slug, so a product always shows the same value — swap this
- * for a real average once reviews are stored.
- */
-function placeholderRating(slug: string) {
-  let hash = 0;
-  for (const ch of slug) hash = (hash * 31 + ch.charCodeAt(0)) % 1000;
-  return 4 + (hash % 10) / 10;
-}
-
-function Stars({ value }: { value: number }) {
-  return (
-    <span className="flex items-center gap-0.5 text-rose">
-      {[0, 1, 2, 3, 4].map((i) => (
-        <Icon
-          key={i}
-          name="star"
-          filled={i < Math.round(value)}
-          className={`w-3.5 h-3.5 ${i < Math.round(value) ? "" : "text-rose-soft"}`}
-        />
-      ))}
-    </span>
-  );
-}
+import { useT } from "@/lib/content/client";
+import { priceLabel } from "@/lib/price";
 
 export function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const t = useT();
   const [added, setAdded] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const rating = placeholderRating(product.slug);
+  const price = priceLabel(product, `${t("pricing.min")} تا ${t("pricing.max")} ${t("pricing.unit")}`);
 
   return (
     <motion.div
@@ -59,14 +33,16 @@ export function ProductCard({ product }: { product: Product }) {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </Link>
-          <button
-            onClick={() => setLiked((v) => !v)}
-            aria-label="افزودن به علاقه‌مندی‌ها"
-            aria-pressed={liked}
-            className="absolute top-3 left-3 z-10 w-8 h-8 rounded-full bg-white/85 backdrop-blur flex items-center justify-center text-accent hover:text-rose transition-colors"
-          >
-            <Icon name="heart" filled={liked} className="w-4 h-4" />
-          </button>
+          {product.badge && (
+            <span className="absolute top-3 right-3 z-10 rounded-full bg-accent text-white text-[11px] px-3 py-1">
+              {product.badge}
+            </span>
+          )}
+          {!product.inStock && (
+            <span className="absolute top-3 left-3 z-10 rounded-full bg-white/90 text-muted text-[11px] px-3 py-1">
+              ناموجود
+            </span>
+          )}
         </div>
 
         <div className="p-4 flex flex-col flex-1 text-center">
@@ -74,20 +50,12 @@ export function ProductCard({ product }: { product: Product }) {
             <h3 className="text-sm font-medium text-accent leading-6">{product.name}</h3>
           </Link>
           <span className="text-xs text-muted mt-1">
-            عطر {categoryLabels[product.category]}
+            عطر {productCategoryLabels[product.category]}
           </span>
 
-          <p className="text-xs text-accent mt-2">
-            {priceRange.min} تا {priceRange.max} {priceRange.unit}
-          </p>
+          <p className="text-xs text-accent mt-2">{price}</p>
 
-          <div className="flex items-center justify-center gap-2 mt-2">
-            <Stars value={rating} />
-            <span className="text-[11px] text-muted">
-              ({rating.toLocaleString("fa-IR", { minimumFractionDigits: 1 })})
-            </span>
-          </div>
-
+          <div className="mt-auto pt-4">
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={() => {
@@ -96,15 +64,17 @@ export function ProductCard({ product }: { product: Product }) {
                 name: product.name,
                 brand: product.brand,
                 image: product.image,
+                price: product.price,
               });
               setAdded(true);
               setTimeout(() => setAdded(false), 1400);
             }}
-            className="mt-4 w-full rounded-full bg-accent hover:bg-accent-dark transition-colors text-white py-2.5 text-xs flex items-center justify-center gap-2"
+            className="w-full rounded-full bg-accent hover:bg-accent-dark transition-colors text-white py-2.5 text-xs flex items-center justify-center gap-2"
           >
             <Icon name={added ? "check" : "bag"} className="w-4 h-4" />
             {added ? "افزوده شد" : "درخواست خرید"}
           </motion.button>
+          </div>
         </div>
       </div>
     </motion.div>

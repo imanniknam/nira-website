@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# CMS runtime data (content, uploads, submissions)
+/data/
+!.env.example
+
+# Client original photos (28 MB); optimised copies live in public/img
+/نیرا/

@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# نیرا — وب‌سایت و پنل مدیریت محتوا
 
-## Getting Started
+Next.js 16 (App Router) + یک CMS فایل‌محور داخلی. همه‌ی متن‌ها، تصاویر، محصولات، رویدادهای گالری و پروژه‌های آرشیو از پنل `/admin` قابل ویرایش‌اند؛ پیام‌های فرم‌ها هم همان‌جا جمع می‌شوند.
 
-First, run the development server:
+## اجرا روی سیستم خودتان
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000  — پنل: /admin
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+در حالت توسعه، ورود پیش‌فرض پنل `admin` / `admin12345` است. داده‌ها در پوشه‌ی `./data` ساخته می‌شوند (در git نیست).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint && npx tsc --noEmit && node scripts/check-content-keys.mjs
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## پنل مدیریت (`/admin`)
 
-## Learn More
+| بخش | کار |
+|---|---|
+| متن و تصویر صفحات | هر متن/تصویر سایت (بنرها، عنوان‌ها، منو، فوتر، تلفن‌ها، سئو…) — فیلد دست‌نخورده روی پیش‌فرض می‌ماند و دکمه «بازگشت به پیش‌فرض» دارد |
+| محصولات | افزودن، ویرایش، مرتب‌سازی، مخفی‌کردن (پیش‌نویس)، حذف؛ قیمت اختصاصی اختیاری |
+| رویدادهای گالری / پروژه‌های آرشیو | افزودن، ویرایش، مرتب‌سازی، حذف، با تصاویر و بخش‌های توضیحی |
+| کتابخانه تصاویر | آپلود (JPG/PNG/WebP/GIF/AVIF تا ۱۲ مگابایت)، کپی آدرس، حذف |
+| پیام‌ها و درخواست‌ها | فرم تماس، درخواست شرکتی، درخواست خرید؛ وضعیت جدید/خوانده/پیگیری‌شده |
+| تنظیمات | تغییر رمز، دانلود پشتیبان JSON |
 
-To learn more about Next.js, take a look at the following resources:
+محتوای جدید دوباره‌ساخته (build) نمی‌شود؛ صفحات سمت سرور و در هر درخواست از `data/` خوانده می‌شوند، پس بعد از «ذخیره» فوراً روی سایت دیده می‌شود.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### داده‌ها کجاست؟
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+همه‌چیز در `DATA_DIR` (پیش‌فرض `./data`، در Docker برابر `/data`):
 
-## Deploy on Vercel
+```
+content.json      متن/تصویرهای ویرایش‌شده (فقط تفاوت با پیش‌فرض)
+products.json  events.json  projects.json
+submissions.json  پیام‌های دریافتی
+admin.json        حساب ادمین (رمز هش‌شده با scrypt)
+session.key       کلید امضای نشست‌ها (خودکار ساخته می‌شود)
+uploads/          تصاویر آپلودشده
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+تا وقتی فایلی ساخته نشده، مقدار اولیه از `src/lib/seed/*` و `src/lib/content/registry.ts` خوانده می‌شود. برای افزودن فیلد قابل‌ویرایش جدید، آن را در `registry.ts` تعریف کنید و در صفحه با `t("کلید")` بخوانید (`scripts/check-content-keys.mjs` کلیدهای ناشناخته را می‌گیرد).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## قیمت‌ها و آمادگی برای درگاه پرداخت
+
+- هر محصول یک `price` عددی (تومان، عدد صحیح) دارد که از پنل (محصولات ← ویرایش ← «قیمت (تومان)») تنظیم می‌شود. مقدارهای فعلی نمونه‌اند (`src/lib/seed/products.ts`).
+- نمایش: `src/lib/price.ts` (`formatToman`، `priceLabel`). اگر `priceText` پر باشد به‌جای عدد نمایش داده می‌شود؛ اگر `price` صفر باشد، بازه‌ی کلی سایت.
+- سبد خرید (`src/app/(site)/cart/CartView.tsx`) جمع کل را نشان می‌دهد، ولی **مبلغ معتبر همیشه سمت سرور** محاسبه می‌شود: `submitCartRequest` در `src/app/actions.ts` اقلام را با `slug` در کاتالوگ پیدا می‌کند و قیمت را از آنجا می‌خواند (قیمتِ ارسالی مرورگر نادیده گرفته می‌شود).
+- **نقطه‌ی اتصال درگاه:** همین‌جا (`submitCartRequest`) است. مبلغ نهایی `total` همان‌جا محاسبه می‌شود؛ برای درگاه، یک سفارش با شناسه بسازید، `total` را به درگاه بدهید و در callback وضعیت را ثبت کنید. اتصال درگاه هنوز انجام نشده است و در دفترچه‌ی راهنمای مشتری هم نیامده.
+
+## تصاویر
+
+- تصاویر ثابت سایت در `public/img/*` هستند. پوشه‌ی `نیرا/` (تصاویر اصلی ارسالی مشتری، خارج از بیلد و Docker) با ابعاد کوچک‌شده به `public/img/{banners,products,exhibition,archive}` منتقل شده است.
+- پنل پیش از آپلود، تصاویر بزرگ را در مرورگر تا ۲۰۰۰ پیکسل کوچک و به WebP تبدیل می‌کند (`src/lib/client-image.ts`) و پیش‌نمایش‌های پنل از بهینه‌ساز `/_next/image` (نسخه‌ی سبک) می‌آیند.
+- به‌دلیل فیلتر شبکه‌های ایران، مسیر `static/chunks` پس از بیلد به `static/assets` تغییر نام می‌دهد (`scripts/rename-chunks.mjs`، جزو `npm run build`). با HTTPS لازم نیست ولی بی‌ضرر است.
+
+## دفترچه‌ی راهنمای مشتری
+
+`docs/دفترچه-راهنمای-پنل-نیرا.pdf` (منبع: `docs/manual/manual.html`؛ برای ساخت دوباره از Chrome با «Print to PDF» یا Playwright استفاده کنید).
+
+## استقرار روی VPS با Docker
+
+سرور فعلی یک Caddy مشترک (`edge-caddy`، در `/opt/edge`) روی پورت‌های ۸۰/۴۴۳ دارد؛ نیرا روی `127.0.0.1:3500` بالا می‌آید و Caddy جلویش قرار می‌گیرد.
+
+```bash
+# از روی سیستم خودتان:
+SITE_URL=https://دامنه-شما ./deploy/deploy.sh
+```
+
+اسکریپت: سورس را در `/opt/apps/nira` همگام می‌کند، در اولین اجرا `.env` با رمز ادمین تصادفی می‌سازد (و یک‌بار چاپ می‌کند)، image را می‌سازد و کانتینر `nira-web` را بالا می‌آورد.
+
+سپس بلوک `deploy/Caddyfile.snippet` (با دامنه‌ی واقعی) را به `/opt/edge/Caddyfile` اضافه و Caddy را reload کنید:
+
+```bash
+docker exec edge-caddy caddy reload --config /etc/caddy/Caddyfile
+```
+
+متغیرهای `.env`: `SITE_URL`، `ADMIN_USERNAME`، `ADMIN_PASSWORD` (فقط برای اولین ورود؛ بعدش از پنل عوض کنید)، اختیاری `SESSION_SECRET`، `NIRA_PORT`. نمونه: `.env.example`.
+
+### پشتیبان‌گیری
+
+```bash
+/opt/apps/nira/deploy/backup.sh      # آرشیو data/ (شامل تصاویر) در /opt/backups/nira
+```
+
+می‌توانید با cron روزانه اجرایش کنید: `0 3 * * * /opt/apps/nira/deploy/backup.sh`.

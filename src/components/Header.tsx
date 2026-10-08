@@ -3,12 +3,19 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { nav } from "@/lib/site";
 import { Logo } from "@/components/Logo";
 import { Icon } from "@/components/Icon";
 import { useCart } from "@/lib/cart-context";
 
-export function Header() {
+export function Header({
+  nav,
+  logo,
+  name,
+}: {
+  nav: { href: string; label: string }[];
+  logo: string;
+  name: string;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -29,8 +36,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-blush/95 backdrop-blur border-b border-line">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 px-4 sm:px-8 h-[72px]">
-        <Link href="/" aria-label="نیرا عطر صحرا" className="shrink-0">
-          <Logo className="h-11 w-auto" />
+        <Link href="/" aria-label={name} className="shrink-0">
+          <Logo src={logo} className="h-11 w-auto" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-4 xl:gap-7 text-[13px] xl:text-sm">
@@ -58,13 +65,6 @@ export function Header() {
           >
             <Icon name={searchOpen ? "close" : "search"} />
           </button>
-          <Link
-            href="/login"
-            aria-label="حساب کاربری"
-            className="hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/70 transition-colors"
-          >
-            <Icon name="user" />
-          </Link>
           <Link
             href="/cart"
             aria-label="سبد خرید"
@@ -118,13 +118,6 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="/login"
-            onClick={() => setOpen(false)}
-            className="rounded-xl px-4 py-2.5 transition-colors hover:bg-white text-foreground/80"
-          >
-            ورود / ثبت‌نام
-          </Link>
         </nav>
       )}
     </header>
