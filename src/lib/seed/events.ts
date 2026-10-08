@@ -8,7 +8,13 @@ export const seedEvents: GalleryEvent[] = [
     title: "نمایشگاه عطر و ادکلن نیرا در مدیریت اکتشاف شرکت ملی نفت ایران",
     location: "ایران",
     date: "به‌زودی",
-    gallery: [],
+    image: "/img/exhibition/expo-4.jpg",
+    heroImage: "/img/exhibition/expo-3.jpg",
+    gallery: [
+      "/img/exhibition/expo-3.jpg",
+      "/img/exhibition/expo-4.jpg",
+      "/img/exhibition/expo-2.jpg",
+    ],
     intro:
       "غرفه‌ی نیرا در شرکت ملی نفت ایران — مدیریت اکتشاف؛ فرصتی برای معرفی حضوری مجموعه‌ی رایحه‌ها به کارکنان و مهمانان و ارائه‌ی مشاوره‌ی تخصصی انتخاب عطر. (متن نمونه — پس از دریافت گزارش و تصاویر نمایشگاه جایگزین می‌شود.)",
     highlights: [
@@ -65,7 +71,13 @@ export const seedEvents: GalleryEvent[] = [
     title: "نمایشگاه عطر و ادکلن نیرا در پژوهشگاه صنعت نفت",
     location: "ایران",
     date: "به‌زودی",
-    gallery: [],
+    image: "/img/exhibition/expo-4.jpg",
+    heroImage: "/img/exhibition/expo-2.jpg",
+    gallery: [
+      "/img/exhibition/expo-2.jpg",
+      "/img/exhibition/expo-4.jpg",
+      "/img/exhibition/expo-1.jpg",
+    ],
     intro:
       "غرفه‌ی نیرا در شرکت ملی نفت ایران — پژوهشگاه صنعت نفت؛ فرصتی برای معرفی حضوری مجموعه‌ی رایحه‌ها به کارکنان و مهمانان و ارائه‌ی مشاوره‌ی تخصصی انتخاب عطر. (متن نمونه — پس از دریافت گزارش و تصاویر نمایشگاه جایگزین می‌شود.)",
     highlights: [
@@ -90,7 +102,13 @@ export const seedEvents: GalleryEvent[] = [
     title: "نمایشگاه‌های نیرا در مناطق مختلف شهرداری تهران",
     location: "ایران",
     date: "به‌زودی",
-    gallery: [],
+    image: "/img/exhibition/expo-2.jpg",
+    heroImage: "/img/exhibition/expo-3.jpg",
+    gallery: [
+      "/img/exhibition/expo-3.jpg",
+      "/img/exhibition/expo-2.jpg",
+      "/img/exhibition/expo-1.jpg",
+    ],
     intro:
       "غرفه‌ی نیرا در شهرداری مناطق مختلف تهران؛ فرصتی برای معرفی حضوری مجموعه‌ی رایحه‌ها به کارکنان و مهمانان و ارائه‌ی مشاوره‌ی تخصصی انتخاب عطر. (متن نمونه — پس از دریافت گزارش و تصاویر نمایشگاه جایگزین می‌شود.)",
     highlights: [
@@ -115,7 +133,13 @@ export const seedEvents: GalleryEvent[] = [
     title: "نمایشگاه عطر و ادکلن نیرا در شرکت گاز",
     location: "ایران",
     date: "به‌زودی",
-    gallery: [],
+    image: "/img/exhibition/expo-1.jpg",
+    heroImage: "/img/exhibition/expo-2.jpg",
+    gallery: [
+      "/img/exhibition/expo-2.jpg",
+      "/img/exhibition/expo-1.jpg",
+      "/img/exhibition/expo-3.jpg",
+    ],
     intro:
       "غرفه‌ی نیرا در شرکت گاز؛ فرصتی برای معرفی حضوری مجموعه‌ی رایحه‌ها به کارکنان و مهمانان و ارائه‌ی مشاوره‌ی تخصصی انتخاب عطر. (متن نمونه — پس از دریافت گزارش و تصاویر نمایشگاه جایگزین می‌شود.)",
     highlights: [
@@ -140,7 +164,13 @@ export const seedEvents: GalleryEvent[] = [
     title: "نمایشگاه عطر و ادکلن نیرا در مجتمع‌های پتروشیمی",
     location: "ایران",
     date: "به‌زودی",
-    gallery: [],
+    image: "/img/exhibition/expo-3.jpg",
+    heroImage: "/img/exhibition/expo-1.jpg",
+    gallery: [
+      "/img/exhibition/expo-1.jpg",
+      "/img/exhibition/expo-3.jpg",
+      "/img/exhibition/expo-2.jpg",
+    ],
     intro:
       "غرفه‌ی نیرا در پتروشیمی؛ فرصتی برای معرفی حضوری مجموعه‌ی رایحه‌ها به کارکنان و مهمانان و ارائه‌ی مشاوره‌ی تخصصی انتخاب عطر. (متن نمونه — پس از دریافت گزارش و تصاویر نمایشگاه جایگزین می‌شود.)",
     highlights: [
@@ -165,7 +195,13 @@ export const seedEvents: GalleryEvent[] = [
     title: "حضور نیرا در مجتمع رفاهی و تفریحی نفت محمودآباد",
     location: "محمودآباد، مازندران",
     date: "به‌زودی",
-    gallery: [],
+    image: "/img/exhibition/expo-2.jpg",
+    heroImage: "/img/exhibition/expo-3.jpg",
+    gallery: [
+      "/img/exhibition/expo-3.jpg",
+      "/img/exhibition/expo-1.jpg",
+      "/img/exhibition/expo-2.jpg",
+    ],
     intro:
       "غرفه‌ی نیرا در مجتمع رفاهی و تفریحی نفت — محمودآباد؛ فرصتی برای معرفی حضوری مجموعه‌ی رایحه‌ها به کارکنان و مهمانان و ارائه‌ی مشاوره‌ی تخصصی انتخاب عطر. (متن نمونه — پس از دریافت گزارش و تصاویر نمایشگاه جایگزین می‌شود.)",
     highlights: [
